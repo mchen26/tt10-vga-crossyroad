@@ -4,6 +4,10 @@
 
 - [Read the documentation for project](docs/info.md)
 
+## Project Overview
+
+Building a VGA crossyroad game on a custom 130nm ASIC
+
 ## What is Tiny Tapeout?
 
 Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
