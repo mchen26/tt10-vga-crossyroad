@@ -6,7 +6,7 @@
 
 ## Project Overview
 
-Building a VGA crossyroad game on a custom 130nm ASIC
+Building a VGA crossyroad game on a custom 130nm ASIC.
 
 ## What is Tiny Tapeout?
 
