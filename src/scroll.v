@@ -1,4 +1,4 @@
-//SPDX-FileCopyrightText: 2024 Matthew Chen, Jovan Koledin, and Ryan Leahy
+//SPDX-FileCopyrightText: 2025 Matthew Chen, Jovan Koledin, and Ryan Leahy
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ module scroll (
     output wire [23:0] speed,
 
     input wire [7:0] speed_change,
-    input wire [7:0] move_amt,
+    input wire move_btn,
 
-	input wire game_rst,
+    input wire game_rst,
     input wire clk,
     input wire sys_rst
 );
