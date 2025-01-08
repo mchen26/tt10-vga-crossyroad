@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module tt10_vga_crossyroad (
+module crossyroad (
     input wire move,
 
     output wire [7:0] VGA_rgb;
