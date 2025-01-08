@@ -8,13 +8,9 @@
 // Updates while user holds move button
 
 module scroll (
-    input wire halt,
     output reg [10:0] pos,
-    output wire [23:0] speed,
 
-    input wire [7:0] speed_change,
     input wire move_btn,
-
     input wire game_rst,
     input wire clk,
     input wire sys_rst
