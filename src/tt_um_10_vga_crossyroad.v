@@ -28,7 +28,7 @@ module tt_um_10_vga_crossyroad (
   wire_unused = &{1'b0};
 
 
-  tt10_vga_crossyroad game1 (
+  crossyroad game1 (
     .move(),
 
     .VGA_rgb(VGA_out),
