@@ -1,4 +1,4 @@
-module scroll (
+module scroll_v (
     output reg [9:0] y_pos, // Counter for scrolling down
     input wire move_btn,
     input wire reset,
@@ -12,7 +12,7 @@ module scroll (
 
     // Internal Registers
     reg [17:0] ctr;                    // Counter for timing
-    reg move_active;                   // Tracks whether the move action is active
+    reg move_active;                   // Track button press state
 
     // Obstacle Movement Logic
     always @(posedge clk) begin
@@ -21,11 +21,8 @@ module scroll (
             ctr <= 0;                  // Reset counter
             move_active <= 0;          // Deactivate movement
         end else begin
-            // Button press triggers movement
             if (move_btn) begin
-                if (!move_active) begin
-                    move_active <= 1;  // Activate movement
-                end
+                move_active <= 1;      // Activate movement
             end else begin
                 move_active <= 0;      // Deactivate movement
             end
@@ -35,13 +32,10 @@ module scroll (
                 ctr <= ctr + 1;
                 if (ctr >= SPEED) begin
                     ctr <= 0;
-                    y_pos <= y_pos + move_amt; // Move down
-                    if (y_pos >= SCREEN_HEIGHT) begin
-                        y_pos <= 0;    // Reset to top when exceeding screen height
-                    end
+                    y_pos <= (y_pos + move_amt) % SCREEN_HEIGHT; // Wrap back to 0
                 end
             end else begin
-                ctr <= 0;              // Reset counter if not active
+                ctr <= 0; // Reset counter when not moving
             end
         end
     end

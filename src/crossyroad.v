@@ -5,44 +5,75 @@
 
 `default_nettype none
 
-module crossyroad (
-    input wire move,
-
-    output wire [7:0] VGA_rgb;
-
-
-    input wire clk,
-    input wire sys_rst,
-
+module crossyroad  (
+    input clk,          // System clock
+    input reset,        // Reset signal
+    input move_btn,       // Button input for scrolling
+    output hsync,       // Horizontal sync for VGA
+    output vsync,       // Vertical sync for VGA
+    output [2:0] rgb
 );
-    
-    // VGA signal wires
-    wire hsync;
-	wire vsync;
-	wire [1:0] vga_red;
-	wire [1:0] vga_green;
-	wire [1:0] vga_blue;
-    wire [9:0] vaddr;
-    wire [9:0] haddr;
 
-    module vga (
-        .vaddr(vaddr),
-        .haddr(haddr),
-        .vsync(vsync),
+    // VGA Resolution
+    parameter SCREEN_WIDTH = 640;
+    parameter SCREEN_HEIGHT = 480;
+    parameter OBSTACLE_WIDTH = 50;
+    parameter OBSTACLE_HEIGHT = 30;
+
+    // Internal signals
+    wire [9:0] pixel_x, pixel_y; // VGA pixel coordinates
+    wire [9:0] obstacle_y;        // Obstacle Y position
+    wire [9:0] obstacle_x;        // Obstacle Y position
+    wire video_on;               // VGA video enable
+
+    // VGA Controller Instance
+    vga vga_inst (
+        .clk(clk),
+        .reset(reset),
         .hsync(hsync),
-        .display_on(display_on)
-
-        .rst(sys_rst),
-        .clk(clk)
+        .vsync(vsync),
+        .display_on(video_on),
+        .hpos(pixel_x),
+        .vpos(pixel_y)
     );
 
-    //  Assign each color bit to individual wires.
-    wire vga_red = display_on & ;
-    wire vga_green = display_on & ;
-    wire vga_blue = display_on & ;
+    scroll_v scroll_v_inst (
+      .clk(clk),
+      .reset(reset),
+      .move_btn(move_btn),
+      .y_pos(obstacle_y)
+    );
+  
+    scroll_h scroll_h_inst (
+      .clk(clk),
+      .reset(reset),
+      .h_pos(obstacle_x)
+    );
+    
 
-   	assign VGA_rgb = {hsync, vga_blue[0], vga_green[0], vga_red[0], 
-                      vsync, vga_blue[1], vga_green[1], vga_red[1]};
+    // VGA Display Logic
+    reg vga_red, vga_green, vga_blue;
 
+    always @(posedge clk) begin
+        if (video_on) begin
+            if (pixel_x >= obstacle_x && pixel_x < obstacle_x + OBSTACLE_WIDTH &&
+                pixel_y >= obstacle_y && pixel_y < obstacle_y + OBSTACLE_HEIGHT) begin
+                vga_red   <= 1; // Obstacle color
+                vga_green <= 0;
+                vga_blue  <= 0;
+            end else begin
+                vga_red   <= 0; // Background color
+                vga_green <= 0;
+                vga_blue  <= 1;
+            end
+        end else begin
+            vga_red <= 0;
+            vga_green <= 0;
+            vga_blue <= 0;
+        end
+    end
+
+  assign rgb = {vga_blue, vga_green, vga_red};
 
 endmodule
+

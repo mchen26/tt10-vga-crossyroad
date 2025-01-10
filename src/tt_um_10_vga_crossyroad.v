@@ -27,8 +27,8 @@ module tt_um_10_vga_crossyroad (
   // List all unused inputs to prevent warnings
   wire_unused = &{1'b0};
 
-
   crossyroad game1 (
+  /* TBD
     .move(),
 
     .VGA_rgb(VGA_out),
@@ -38,5 +38,6 @@ module tt_um_10_vga_crossyroad (
 
     //.debug_in(),
   );
+  */
 
 endmodule
