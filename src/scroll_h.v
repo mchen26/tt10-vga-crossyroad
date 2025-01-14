@@ -5,9 +5,9 @@ module scroll_h (
 );
 
     // Parameters
-    localparam move_amt = 5;           // Move amount per 10ms
+    localparam move_amt = 2;           // Move amount per 10ms
     localparam SCREEN_WIDTH = 640;    // Screen height
-    localparam SPEED = 250000;         // 10ms at 25MHz clock
+    localparam SPEED = 15000;         // 10ms at 25MHz clock
 
     // Internal Registers
     reg [17:0] ctr;                    // Counter for timing
@@ -21,7 +21,11 @@ module scroll_h (
             ctr <= ctr + 1;
             if (ctr >= SPEED) begin
                 ctr <= 0;
-                h_pos <= (h_pos + move_amt) % SCREEN_WIDTH; // Wrap back to 0
+              if ((h_pos + move_amt) >= SCREEN_WIDTH) begin
+                  h_pos <= 0;
+              end else begin
+                  h_pos <= h_pos + move_amt;
+              end 
             end
         end
     end
