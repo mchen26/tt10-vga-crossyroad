@@ -1,6 +1,7 @@
 module scroll_v (
     output reg [9:0] y_pos, // Counter for scrolling down
     output reg [7:0] score,
+    input wire [9:0] start_posy,
     input wire move_btn,
     input wire reset,
     input wire clk
@@ -20,7 +21,7 @@ module scroll_v (
     // Obstacle Movement Logic
     always @(posedge clk) begin
         if (reset) begin
-            y_pos <= 0;                // Reset position to top
+            y_pos <= start_posy;        // Reset position to top
             ctr <= 0;                  // Reset counter
             move_active <= 0;          // Deactivate movement
             score_ctr <= 0;

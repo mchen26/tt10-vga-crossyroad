@@ -1,6 +1,8 @@
 module scroll_h (
     output reg [9:0] h_pos, // Counter for scrolling down
     input wire reset,
+    input wire [9:0] start_posx,
+    input wire [7:0] score,
     input wire clk
 );
 
@@ -15,12 +17,12 @@ module scroll_h (
     // Obstacle Movement Logic
     always @(posedge clk) begin
         if (reset) begin
-            h_pos <= 0;                // Reset position to top
+            h_pos <= start_posx;                // Reset position to top
             ctr <= 0;                  // Reset counter
         end else begin
             ctr <= ctr + 1;
-            if (ctr >= SPEED) begin
-                ctr <= 0;
+          if (ctr >= (SPEED)) begin
+              ctr <= {10'b0, score} << 5; // Increase speed as score increases
               if ((h_pos + move_amt) >= SCREEN_WIDTH) begin
                   h_pos <= 0;
               end else begin

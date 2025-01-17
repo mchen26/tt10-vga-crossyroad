@@ -23,11 +23,14 @@ module crossyroad  (
     localparam CHICKEN_Y = 400;
     localparam CHICKEN_WIDTH = 30;
     localparam CHICKEN_HEIGHT = 40;
+    localparam OB_Y_OFFSET = 10'd200;
+    localparam OB_X_OFFSET = 10'd150;
+
 
     // Internal signals
     wire [9:0] pixel_x, pixel_y; // VGA pixel coordinates
-    wire [9:0] obstacle_y;       // Obstacle Y position
-    wire [9:0] obstacle_x;       // Obstacle X position (Corrected typo)
+    wire [9:0] obstacle1_y, obstacle2_y;       // Obstacle Y position
+    wire [9:0] obstacle1_x, obstacle2_x;       // Obstacle X position (Corrected typo)
     wire [7:0] score;
     wire rst;
     wire video_on;            // VGA video enable
@@ -43,35 +46,62 @@ module crossyroad  (
         .vpos(pixel_y)
     );
 
-    scroll_v scroll_v_inst (
+    scroll_v scroll1_v_inst (
         .clk(clk),
         .reset(rst),
         .move_btn(move_btn),
         .score(score),
-        .y_pos(obstacle_y)
+        .start_posy(10'b0),
+        .y_pos(obstacle1_y)
     );
 
-    scroll_h scroll_h_inst (
+    scroll_h scroll1_h_inst (
         .clk(clk),
         .reset(rst),
-        .h_pos(obstacle_x)
+        .score(score),
+        .start_posx(10'b0),
+        .h_pos(obstacle1_x)
+    );
+  
+    scroll_v scroll2_v_inst (
+        .clk(clk),
+        .reset(rst),
+        .move_btn(move_btn),
+        .score(score),
+        .start_posy(OB_Y_OFFSET),
+        .y_pos(obstacle2_y)
+    );
+
+    scroll_h scroll2_h_inst (
+        .clk(clk),
+        .reset(rst),
+        .score(score),
+        .start_posx(OB_X_OFFSET),
+        .h_pos(obstacle2_x)
     );
 
     // VGA Display & Collision Logic (Optimized)
-    wire obstacle_hit = (pixel_x >= obstacle_x) && (pixel_x < obstacle_x + OBSTACLE_WIDTH) &&
-                         (pixel_y >= obstacle_y) && (pixel_y < obstacle_y + OBSTACLE_HEIGHT);
-
+    wire obstacle1_hit = (pixel_x >= obstacle1_x) && (pixel_x < obstacle1_x + OBSTACLE_WIDTH) &&
+  			(pixel_y >= obstacle1_y) && (pixel_y < obstacle1_y + OBSTACLE_HEIGHT);
+    
+    // VGA Display & Collision Logic for the second obstacle
+    wire obstacle2_hit = (pixel_x >= obstacle2_x) && (pixel_x < obstacle2_x + OBSTACLE_WIDTH) &&
+  			(pixel_y >= obstacle2_y) && (pixel_y < obstacle2_y + OBSTACLE_HEIGHT);
+    
+    // Check if vga scan hits chicken location
     wire chicken_hit = (pixel_x >= CHICKEN_X) && (pixel_x < CHICKEN_X + CHICKEN_WIDTH) &&
                         (pixel_y >= CHICKEN_Y) && (pixel_y < CHICKEN_Y + CHICKEN_HEIGHT);
 
     assign rgb = (video_on) ?
-                 (obstacle_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
-                 (obstacle_hit) ? 3'b100 :           // Obstacle (Red)
+                 (obstacle1_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
+                 (obstacle2_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
+      		 (obstacle1_hit) ? 3'b100 :           // Obstacle (Red)
+                 (obstacle2_hit) ? 3'b100 :           // Obstacle (Red)
                  (chicken_hit) ? 3'b010 :            // Chicken (Green)
                  3'b001 :                          // Background (Blue)
                  3'b000;                           // Blanking (Black)
 
-    wire rst_collision = obstacle_hit && chicken_hit; // If collision activate reset
+    wire rst_collision = (obstacle1_hit || obstacle2_hit) && chicken_hit; // If collision activate reset
     assign rst = rst_man | rst_collision;
 
 endmodule
