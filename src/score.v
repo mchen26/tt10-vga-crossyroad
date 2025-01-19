@@ -13,7 +13,9 @@ module score #(
     parameter SCORE_GAP = 4,
     parameter SCORE_HEIGHT = 28,
     parameter SCORE_HORIZONTAL_START_OFFSET = 590,
-    parameter SCORE_VERTICAL_START_OFFSET = 2
+    parameter SCORE_VERTICAL_START_OFFSET = 2,
+    parameter BANNER_COLOR = 3'b000, // WARNING: Black means no draw
+    parameter DIGIT_COLOR  = 3'b100
 )
 (
     input wire i_clk,
@@ -32,6 +34,12 @@ module score #(
 
     wire w_digit[9:0];
 
+    /**
+     * Determines which Nth place should be currently drawn on the screen for the score
+     * given the horizontal position.
+     *
+     * Also indicates when the horizontal position is not in a place to draw the score.
+    */
     assign r_current_digits_place = (i_hpos >= SCORE_HORIZONTAL_START_OFFSET &&
                                      i_hpos <  SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH) ? 
                                         2'd2 : // 100's place
@@ -40,15 +48,23 @@ module score #(
                                         2'd1 : // 10's place
                                    (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + 2*SCORE_GAP &&
                                     i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 3*SCORE_WIDTH + 2*SCORE_GAP) ?
-                                        2'd0 :  // 1's place
-                                        2'd3; // Not in digit section.
+                                        2'd0 : // 1's place
+                                        2'd3;  // Not in digit section.
 
+    /**
+     * Sets the horizontal draw offset for the score digits taking into account the Nth place horizontal position.
+    */
     assign r_digit_horizontal_offset = (r_current_digits_place == 2'd2) ?
                                         SCORE_HORIZONTAL_START_OFFSET : // 100's place horizontal offset
-                                    (r_current_digits_place == 2'd1) ? 
+                                       (r_current_digits_place == 2'd1) ? 
                                         SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP - 1 : // 10's place horizontal offset
                                         SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + 2*SCORE_GAP - 1; // 1's place horizontal offset
 
+    /**
+     * The digits 0-9 are composed of different combinations of 9 geometrical shapes that overlap.
+     *
+     * In the docs directory, you can find an image showing these geometries represented as different colors.
+    */
     // RED
     assign w_digit_geometries[0] = (i_vpos >= SCORE_VERTICAL_START_OFFSET      && i_vpos < SCORE_VERTICAL_START_OFFSET +  4) &&
                                    (i_hpos >= r_digit_horizontal_offset        && i_hpos < r_digit_horizontal_offset   +  8);
@@ -85,10 +101,14 @@ module score #(
     assign w_digit_geometries[8] = (i_vpos >= SCORE_VERTICAL_START_OFFSET      && i_vpos < SCORE_VERTICAL_START_OFFSET +  4) &&
                                    (i_hpos >= r_digit_horizontal_offset   +  8 && i_hpos < r_digit_horizontal_offset   + 12);
 
+    /**
+     * In the doc directory, you can find an image showing the different geometries that compose the digits.
+    */
     assign w_digit[0] = w_digit_geometries[0] || w_digit_geometries[1] || w_digit_geometries[2] || w_digit_geometries[3] ||
                         w_digit_geometries[4] || w_digit_geometries[5];
 
     assign w_digit[1] = w_digit_geometries[0] || w_digit_geometries[7] || w_digit_geometries[3];
+
 
     assign w_digit[2] = w_digit_geometries[0] || w_digit_geometries[5] || w_digit_geometries[6] || w_digit_geometries[2] ||
                         w_digit_geometries[3];
@@ -98,6 +118,7 @@ module score #(
 
     assign w_digit[4] = w_digit_geometries[1] || w_digit_geometries[6] || w_digit_geometries[5] || w_digit_geometries[4];
 
+
     assign w_digit[5] = w_digit_geometries[8] || w_digit_geometries[0] || w_digit_geometries[1] || w_digit_geometries[6] ||
                         w_digit_geometries[4] || w_digit_geometries[3];
 
@@ -106,30 +127,32 @@ module score #(
 
     assign w_digit[7] = w_digit_geometries[0] || w_digit_geometries[5] || w_digit_geometries[4];
 
+
     assign w_digit[8] = w_digit_geometries[8] || w_digit_geometries[0] || w_digit_geometries[1] || w_digit_geometries[6] ||
                         w_digit_geometries[4] || w_digit_geometries[3] || w_digit_geometries[2] || w_digit_geometries[5];
 
     assign w_digit[9] = w_digit_geometries[8] || w_digit_geometries[0] || w_digit_geometries[1] || w_digit_geometries[6] ||
                         w_digit_geometries[4] || w_digit_geometries[5];
 
+
 always @(posedge i_clk) begin
     if (i_rst_n && i_vpos <= SCORE_BACKGROUND_HEIGHT) begin
         if(i_vpos < SCORE_VERTICAL_START_OFFSET   && i_vpos > SCORE_VERTICAL_START_OFFSET + SCORE_HEIGHT &&
            r_current_digits_place == 2'd3) begin
-            o_score_rgb <= 3'b111; // Currently not in the region that the score can be drawn in. Draw the background.
+            o_score_rgb <= BANNER_COLOR; // Currently not in the region that the score can be drawn in. Draw the banner background.
         end
-        else if (r_current_digits_place == 2'd2) begin // 100's place
-            o_score_rgb <= (w_digit[i_score / 100]) ? 3'b001 : 3'b111;
+        else if (r_current_digits_place == 2'd2) begin // Draw 100's place digit
+            o_score_rgb <= (w_digit[i_score / 100]) ? DIGIT_COLOR : BANNER_COLOR;
         end
-        else if (r_current_digits_place == 2'd1) begin // 10's place
-            o_score_rgb <= (w_digit[(i_score / 10) % 10]) ? 3'b001 : 3'b111;
+        else if (r_current_digits_place == 2'd1) begin // Draw 10's place digit
+            o_score_rgb <= (w_digit[(i_score / 10) % 10]) ? DIGIT_COLOR : BANNER_COLOR;
         end
-        else begin // 1's place
-            o_score_rgb <= (w_digit[(i_score) % 10]) ? 3'b001 : 3'b111;
+        else begin // Draw 1's place digit
+            o_score_rgb <= (w_digit[(i_score) % 10]) ? DIGIT_COLOR : BANNER_COLOR;
         end
     end
     else begin
-        o_score_rgb <= 3'b000;
+        o_score_rgb <= 3'b000; // WARNING: Black means no draw
     end
 end
 
