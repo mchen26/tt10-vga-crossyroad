@@ -40,24 +40,21 @@ module vga (
     wire hmaxxed = (hpos == H_MAX) || reset; // set when hpos is maximum
     wire vmaxxed = (vpos == V_MAX) || reset; // set when vpos is maximum
 
-    // horizontal position counter
+    // position counter
     always @(posedge clk)
     begin
-        hsync <= (hpos >= H_SYNC_START && hpos <= H_SYNC_END);
-        if(hmaxxed)
+        if(hmaxxed) begin
+            if(vmaxxed)
+                vpos <= 0;
+            else
+                vpos <= vpos + 1;
             hpos <= 0;
-        else
+        end 
+        else begin
             hpos <= hpos + 1;
-    end
-
-    // vertical position counter
-    always @(posedge clk)
-    begin
+        end
+        hsync <= (hpos >= H_SYNC_START && hpos <= H_SYNC_END);
         vsync <= (vpos >= V_SYNC_START && vpos <= V_SYNC_END);
-        if (vmaxxed)
-            vpos <= 0;
-        else
-            vpos <= vpos + 1;
     end
 
     // display_on is set when beam is in "safe" visible frame

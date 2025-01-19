@@ -33,12 +33,12 @@ module score #(
     wire w_digit[9:0];
 
     assign r_current_digits_place = (i_hpos >= SCORE_HORIZONTAL_START_OFFSET &&
-                                    i_hpos <  SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH) ? 
+                                     i_hpos <  SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH) ? 
                                         2'd2 : // 100's place
                                     (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP &&
-                                    i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + SCORE_GAP) ?
+                                     i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + SCORE_GAP) ?
                                         2'd1 : // 10's place
-                                    (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP &&
+                                   (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + 2*SCORE_GAP &&
                                     i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 3*SCORE_WIDTH + 2*SCORE_GAP) ?
                                         2'd0 :  // 1's place
                                         2'd3; // Not in digit section.
@@ -83,7 +83,7 @@ module score #(
 
     // BLACK
     assign w_digit_geometries[8] = (i_vpos >= SCORE_VERTICAL_START_OFFSET      && i_vpos < SCORE_VERTICAL_START_OFFSET +  4) &&
-                                   (i_hpos >= r_digit_horizontal_offset        && i_hpos < r_digit_horizontal_offset   +  8);
+                                   (i_hpos >= r_digit_horizontal_offset   +  8 && i_hpos < r_digit_horizontal_offset   + 12);
 
     assign w_digit[0] = w_digit_geometries[0] || w_digit_geometries[1] || w_digit_geometries[2] || w_digit_geometries[3] ||
                         w_digit_geometries[4] || w_digit_geometries[5];
