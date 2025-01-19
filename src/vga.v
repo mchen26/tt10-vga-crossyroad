@@ -8,8 +8,8 @@
 `define HVSYNC_GENERATOR_H
 
 module vga (
-    output reg [9:0] vaddr,
-    output reg [9:0] haddr,
+    output reg [9:0] vpos,
+    output reg [9:0] hpos,
     output reg vsync,
     output reg hsync,
     output display_on,
@@ -37,33 +37,32 @@ module vga (
     parameter V_SYNC_END      = V_DISPLAY + V_BOTTOM + V_SYNC - 1;
     parameter V_MAX           = V_DISPLAY + V_TOP + V_BOTTOM + V_SYNC - 1;
 
-    wire hmaxxed = (hpos == H_MAX) || reset;	// set when hpos is maximum
-    wire vmaxxed = (vpos == V_MAX) || reset;	// set when vpos is maximum
-    
+    wire hmaxxed = (hpos == H_MAX) || reset; // set when hpos is maximum
+    wire vmaxxed = (vpos == V_MAX) || reset; // set when vpos is maximum
+
     // horizontal position counter
     always @(posedge clk)
     begin
-        hsync <= (hpos>=H_SYNC_START && hpos<=H_SYNC_END);
+        hsync <= (hpos >= H_SYNC_START && hpos <= H_SYNC_END);
         if(hmaxxed)
-        hpos <= 0;
+            hpos <= 0;
         else
-        hpos <= hpos + 1;
+            hpos <= hpos + 1;
     end
 
     // vertical position counter
     always @(posedge clk)
     begin
-        vsync <= (vpos>=V_SYNC_START && vpos<=V_SYNC_END);
-        if(hmaxxed)
+        vsync <= (vpos >= V_SYNC_START && vpos <= V_SYNC_END);
         if (vmaxxed)
             vpos <= 0;
         else
             vpos <= vpos + 1;
     end
-    
+
     // display_on is set when beam is in "safe" visible frame
-    assign display_on = (hpos<H_DISPLAY) && (vpos<V_DISPLAY);
+    assign display_on = (hpos < H_DISPLAY) && (vpos < V_DISPLAY);
 
-    endmodule
+endmodule
 
-    `endif
+`endif
