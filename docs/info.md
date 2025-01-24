@@ -9,12 +9,13 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+Chicken tries to cross the never ending roads with dangerous cars. Score increments by pressing the movement button on ui_in[0]
 
 ## How to test
 
-Explain how to use your project
+Hook up ui_in[0] to a debounced button, supply clk @25Mhz, connect to vga display
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+- Debouned button to ui_in[0]. 
+- 25Mhz clock to clk pin
