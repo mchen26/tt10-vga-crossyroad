@@ -34,6 +34,7 @@ module crossyroad  (
     wire [9:0] obstacle1_y, obstacle2_y, obstacle3_y;       // Obstacle Y position
     wire [9:0] obstacle1_x, obstacle2_x, obstacle3_x;       // Obstacle X position (Corrected typo)
     wire [7:0] score;
+    wire [7:0] dummy_score1, dummy_score2; // Only want one scroll_v module to drive score
     wire [2:0] score_rgb;
     wire rst;
     wire video_on;            // VGA video enable
@@ -70,7 +71,7 @@ module crossyroad  (
         .clk(clk),
         .reset(rst),
         .move_btn(move_btn),
-        .score(score),
+        .score(dummy_score1),
         .start_posy(OB_Y_OFFSET),
         .y_pos(obstacle2_y)
     );
@@ -86,7 +87,7 @@ module crossyroad  (
         .clk(clk),
         .reset(rst),
         .move_btn(move_btn),
-        .score(score),
+        .score(dummy_score3),
         .start_posy(OB_Y_OFFSET << 1),
         .y_pos(obstacle3_y)
     );
