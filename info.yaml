@@ -21,7 +21,6 @@ project:
     - "score.v"
     - "scroll_h.v"
     - "scroll_v.v"
-    - "tt_um_10_vga_crossyroad.v"
     - "vga.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
