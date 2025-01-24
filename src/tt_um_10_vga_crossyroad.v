@@ -19,6 +19,8 @@ module tt_um_10_vga_crossyroad (
   wire hsync, vsync;
   wire [2:0] rgb;
   wire unused;
+  wire unused_8;
+  wire unused_8;
 
   crossyroad game1 (
     .clk(clk),          // System clock
@@ -46,6 +48,7 @@ module tt_um_10_vga_crossyroad (
   assign uio_out = 0;
   assign uio_oe  = 0;
   assign unused = ena;
- 
+  assign unused_8 = uio_in;
+  assign unused_7 = ui_in[7:1];
 
 endmodule

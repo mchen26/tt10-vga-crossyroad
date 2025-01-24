@@ -9,7 +9,9 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Chicken tries to cross the never ending roads with dangerous cars. Score increments by pressing the movement button on ui_in[0]
+Chicken tries to cross the never ending roads with dangerous cars. 
+Move chicken up by pressing the move_btn on ui_in[0]
+Score increments while pressing the movement button 
 
 ## How to test
 

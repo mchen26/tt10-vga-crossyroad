@@ -15,10 +15,10 @@ module crossyroad  (
 );
 
     // VGA Resolution
-    localparam SCREEN_WIDTH = 640;
-    localparam SCREEN_HEIGHT = 480;
-    localparam SCORE_WIDTH = 640;
-    localparam SCORE_HEIGHT = 32;
+    //localparam SCREEN_WIDTH = 640;
+    //localparam SCREEN_HEIGHT = 480;
+    //localparam SCORE_WIDTH = 640;
+    //localparam SCORE_HEIGHT = 32;
     localparam OBSTACLE_WIDTH = 50;
     localparam OBSTACLE_HEIGHT = 30;
     localparam CHICKEN_X = 310;

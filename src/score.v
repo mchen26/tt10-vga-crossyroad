@@ -6,9 +6,9 @@
 
 // Calculate and render score, score increments while user holds move button
 module score #(
-    parameter SCORE_BACKGROUND_WIDTH = 640,
+    //parameter SCORE_BACKGROUND_WIDTH = 640,
     parameter SCORE_BACKGROUND_HEIGHT = 32,
-    parameter SCORE_TOTAL_WIDTH = 46,
+    //parameter SCORE_TOTAL_WIDTH = 46,
     parameter SCORE_WIDTH = 12,
     parameter SCORE_GAP = 4,
     parameter SCORE_HEIGHT = 28,
