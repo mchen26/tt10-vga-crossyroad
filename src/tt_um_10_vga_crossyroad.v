@@ -16,28 +16,36 @@ module tt_um_10_vga_crossyroad (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  wire [7:0] VGA_out;
-
-  // All output pins must be assigned. If not used, assign to 0.
-  // assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uo_out = VGA_out;
-  assign uio_out = 0;
-  assign uio_oe  = 0;
-
-  // List all unused inputs to prevent warnings
-  wire_unused = &{1'b0};
+  wire hsync, vsync;
+  wire [2:0] rgb;
+  wire unused;
 
   crossyroad game1 (
-  /* TBD
-    .move(),
-
-    .VGA_rgb(VGA_out),
-
-    .clk(clk),
-    .sys_rst(rst_n),
-
-    //.debug_in(),
+    .clk(clk),          // System clock
+    .rst_man(!rst_n),      // Reset signal
+    .move_btn(ui_in[0]),      // Button input for scrolling
+    .hsync(hsync),       // Horizontal sync for VGA
+    .vsync(vsync),       // Vertical sync for VGA
+    .rgb(rgb)
   );
+  
+  /*
+  uo_out Pinout:
+
+  uo_out[0] - R1
+  uo_out[1] - G1
+  uo_out[2] - B1
+  uo_out[3] - vsync
+  uo_out[4] - R0
+  uo_out[5] - G0
+  uo_out[6] - B0
+  uo_out[7] - hsync
   */
+  assign uo_out = {hsync, rgb[0], rgb[1], rgb[2], vsync, rgb[0], rgb[1], rgb[2]};
+  // All output/input pins must be assigned. If not used, assign to 0.
+  assign uio_out = 0;
+  assign uio_oe  = 0;
+  assign unused = ena;
+ 
 
 endmodule
