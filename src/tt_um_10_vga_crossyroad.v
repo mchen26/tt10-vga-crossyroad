@@ -19,8 +19,8 @@ module tt_um_10_vga_crossyroad (
   wire hsync, vsync;
   wire [2:0] rgb;
   wire unused;
-  wire unused_8;
-  wire unused_7;
+  wire [7:0] unused_8;
+  wire [6:0] unused_7;
 
   crossyroad game1 (
     .clk(clk),          // System clock
