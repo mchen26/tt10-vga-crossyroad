@@ -87,7 +87,7 @@ module crossyroad  (
         .clk(clk),
         .reset(rst),
         .move_btn(move_btn),
-        .score(dummy_score3),
+        .score(dummy_score2),
         .start_posy(OB_Y_OFFSET << 1),
         .y_pos(obstacle3_y)
     );
