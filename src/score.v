@@ -6,9 +6,9 @@
 
 // Calculate and render score, score increments while user holds move button
 module score #(
-    parameter SCORE_BACKGROUND_WIDTH = 640,
+    //parameter SCORE_BACKGROUND_WIDTH = 640,
     parameter SCORE_BACKGROUND_HEIGHT = 32,
-    parameter SCORE_TOTAL_WIDTH = 46,
+    //parameter SCORE_TOTAL_WIDTH = 46,
     parameter SCORE_WIDTH = 12,
     parameter SCORE_GAP = 4,
     parameter SCORE_HEIGHT = 28,
@@ -24,7 +24,7 @@ module score #(
     input wire [9:0] i_hpos,
     input wire [7:0] i_score,
 
-    output wire [2:0] o_score_rgb
+    output reg [2:0] o_score_rgb
 );
 
     wire [1:0] w_current_digits_place;
