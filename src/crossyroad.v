@@ -61,7 +61,7 @@ module crossyroad  (
     scroll_h scroll1_h_inst (
         .clk(clk),
         .reset(rst),
-        .score(score),
+        .score(),
         .start_posx(10'b0),
         .h_pos(obstacle1_x)
     );
@@ -70,7 +70,7 @@ module crossyroad  (
         .clk(clk),
         .reset(rst),
         .move_btn(move_btn),
-        .score(score),
+        .score(),
         .start_posy(OB_Y_OFFSET),
         .y_pos(obstacle2_y)
     );
@@ -78,7 +78,7 @@ module crossyroad  (
     scroll_h scroll2_h_inst (
         .clk(clk),
         .reset(rst),
-        .score(score),
+        .score(),
         .start_posx(OB_X_OFFSET),
         .h_pos(obstacle2_x)
     );

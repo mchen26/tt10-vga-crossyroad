@@ -27,12 +27,14 @@ module score #(
     output wire [2:0] o_score_rgb
 );
 
-    reg [1:0] r_current_digits_place;
-    reg [9:0] r_digit_horizontal_offset;
+    wire [1:0] w_current_digits_place;
+    wire [9:0] w_digit_horizontal_offset;
 
     wire w_digit_geometries[8:0];
 
     wire w_digit[9:0];
+
+    reg [2:0] r_score_rgb;
 
     /**
      * Determines which Nth place should be currently drawn on the screen for the score
@@ -40,23 +42,23 @@ module score #(
      *
      * Also indicates when the horizontal position is not in a place to draw the score.
     */
-    assign r_current_digits_place = (i_hpos >= SCORE_HORIZONTAL_START_OFFSET &&
+    assign w_current_digits_place = (i_hpos >= SCORE_HORIZONTAL_START_OFFSET &&
                                      i_hpos <  SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH) ? 
                                         2'd2 : // 100's place
                                     (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP &&
                                      i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + SCORE_GAP) ?
                                         2'd1 : // 10's place
-                                   (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + 2*SCORE_GAP &&
-                                    i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 3*SCORE_WIDTH + 2*SCORE_GAP) ?
+                                    (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + 2*SCORE_GAP &&
+                                     i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 3*SCORE_WIDTH + 2*SCORE_GAP) ?
                                         2'd0 : // 1's place
                                         2'd3;  // Not in digit section.
 
     /**
      * Sets the horizontal draw offset for the score digits taking into account the Nth place horizontal position.
     */
-    assign r_digit_horizontal_offset = (r_current_digits_place == 2'd2) ?
+    assign w_digit_horizontal_offset = (w_current_digits_place == 2'd2) ?
                                         SCORE_HORIZONTAL_START_OFFSET : // 100's place horizontal offset
-                                       (r_current_digits_place == 2'd1) ? 
+                                       (w_current_digits_place == 2'd1) ? 
                                         SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP - 1 : // 10's place horizontal offset
                                         SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + 2*SCORE_GAP - 1; // 1's place horizontal offset
 
@@ -67,39 +69,39 @@ module score #(
     */
     // RED
     assign w_digit_geometries[0] = (i_vpos >= SCORE_VERTICAL_START_OFFSET      && i_vpos < SCORE_VERTICAL_START_OFFSET +  4) &&
-                                   (i_hpos >= r_digit_horizontal_offset        && i_hpos < r_digit_horizontal_offset   +  8);
+                                   (i_hpos >= w_digit_horizontal_offset        && i_hpos < w_digit_horizontal_offset   +  8);
 
     // CYAN
     assign w_digit_geometries[1] = (i_vpos >= SCORE_VERTICAL_START_OFFSET      && i_vpos < SCORE_VERTICAL_START_OFFSET + 16) &&
-                                   (i_hpos >= r_digit_horizontal_offset        && i_hpos < r_digit_horizontal_offset   +  4);
+                                   (i_hpos >= w_digit_horizontal_offset        && i_hpos < w_digit_horizontal_offset   +  4);
 
     // MAGENTA
     assign w_digit_geometries[2] = (i_vpos >= SCORE_VERTICAL_START_OFFSET + 16 && i_vpos < SCORE_VERTICAL_START_OFFSET + 24) &&
-                                   (i_hpos >= r_digit_horizontal_offset        && i_hpos < r_digit_horizontal_offset   +  4);
+                                   (i_hpos >= w_digit_horizontal_offset        && i_hpos < w_digit_horizontal_offset   +  4);
 
     // YELLOW
     assign w_digit_geometries[3] = (i_vpos >= SCORE_VERTICAL_START_OFFSET + 24 && i_vpos < SCORE_VERTICAL_START_OFFSET + 28) &&
-                                   (i_hpos >= r_digit_horizontal_offset        && i_hpos < r_digit_horizontal_offset   + 12);
+                                   (i_hpos >= w_digit_horizontal_offset        && i_hpos < w_digit_horizontal_offset   + 12);
 
     // PURPLE
     assign w_digit_geometries[4] = (i_vpos >= SCORE_VERTICAL_START_OFFSET + 16 && i_vpos < SCORE_VERTICAL_START_OFFSET + 28) &&
-                                   (i_hpos >= r_digit_horizontal_offset   +  8 && i_hpos < r_digit_horizontal_offset   + 12);
+                                   (i_hpos >= w_digit_horizontal_offset   +  8 && i_hpos < w_digit_horizontal_offset   + 12);
 
     // BLUE
     assign w_digit_geometries[5] = (i_vpos >= SCORE_VERTICAL_START_OFFSET      && i_vpos < SCORE_VERTICAL_START_OFFSET + 16) &&
-                                   (i_hpos >= r_digit_horizontal_offset   +  8 && i_hpos < r_digit_horizontal_offset   + 12);
+                                   (i_hpos >= w_digit_horizontal_offset   +  8 && i_hpos < w_digit_horizontal_offset   + 12);
 
     // GREEN
     assign w_digit_geometries[6] = (i_vpos >= SCORE_VERTICAL_START_OFFSET + 12 && i_vpos < SCORE_VERTICAL_START_OFFSET + 16) &&
-                                   (i_hpos >= r_digit_horizontal_offset        && i_hpos < r_digit_horizontal_offset   + 12);
+                                   (i_hpos >= w_digit_horizontal_offset        && i_hpos < w_digit_horizontal_offset   + 12);
 
     // ORANGE
     assign w_digit_geometries[7] = (i_vpos >= SCORE_VERTICAL_START_OFFSET +  4 && i_vpos < SCORE_VERTICAL_START_OFFSET + 24) &&
-                                   (i_hpos >= r_digit_horizontal_offset   +  4 && i_hpos < r_digit_horizontal_offset   +  8);
+                                   (i_hpos >= w_digit_horizontal_offset   +  4 && i_hpos < w_digit_horizontal_offset   +  8);
 
     // BLACK
     assign w_digit_geometries[8] = (i_vpos >= SCORE_VERTICAL_START_OFFSET      && i_vpos < SCORE_VERTICAL_START_OFFSET +  4) &&
-                                   (i_hpos >= r_digit_horizontal_offset   +  8 && i_hpos < r_digit_horizontal_offset   + 12);
+                                   (i_hpos >= w_digit_horizontal_offset   +  8 && i_hpos < w_digit_horizontal_offset   + 12);
 
     /**
      * In the doc directory, you can find an image showing the different geometries that compose the digits.
@@ -134,25 +136,26 @@ module score #(
     assign w_digit[9] = w_digit_geometries[8] || w_digit_geometries[0] || w_digit_geometries[1] || w_digit_geometries[6] ||
                         w_digit_geometries[4] || w_digit_geometries[5];
 
+    assign o_score_rgb = r_score_rgb;
 
 always @(posedge i_clk) begin
     if (i_rst_n && i_vpos <= SCORE_BACKGROUND_HEIGHT) begin
         if(i_vpos < SCORE_VERTICAL_START_OFFSET   && i_vpos > SCORE_VERTICAL_START_OFFSET + SCORE_HEIGHT &&
-           r_current_digits_place == 2'd3) begin
-            o_score_rgb <= BANNER_COLOR; // Currently not in the region that the score can be drawn in. Draw the banner background.
+           w_current_digits_place == 2'd3) begin
+            r_score_rgb <= BANNER_COLOR; // Currently not in the region that the score can be drawn in. Draw the banner background.
         end
-        else if (r_current_digits_place == 2'd2) begin // Draw 100's place digit
-            o_score_rgb <= (w_digit[i_score / 100]) ? DIGIT_COLOR : BANNER_COLOR;
+        else if (w_current_digits_place == 2'd2) begin // Draw 100's place digit
+            r_score_rgb <= (w_digit[i_score / 100]) ? DIGIT_COLOR : BANNER_COLOR;
         end
-        else if (r_current_digits_place == 2'd1) begin // Draw 10's place digit
-            o_score_rgb <= (w_digit[(i_score / 10) % 10]) ? DIGIT_COLOR : BANNER_COLOR;
+        else if (w_current_digits_place == 2'd1) begin // Draw 10's place digit
+            r_score_rgb <= (w_digit[(i_score / 10) % 10]) ? DIGIT_COLOR : BANNER_COLOR;
         end
         else begin // Draw 1's place digit
-            o_score_rgb <= (w_digit[(i_score) % 10]) ? DIGIT_COLOR : BANNER_COLOR;
+            r_score_rgb <= (w_digit[(i_score) % 10]) ? DIGIT_COLOR : BANNER_COLOR;
         end
     end
     else begin
-        o_score_rgb <= 3'b000; // WARNING: Black means no draw
+        r_score_rgb <= 3'b000; // WARNING: Black means no draw
     end
 end
 
