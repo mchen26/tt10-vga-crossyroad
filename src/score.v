@@ -24,7 +24,7 @@ module score #(
     input wire [9:0] i_hpos,
     input wire [7:0] i_score,
 
-    output reg [2:0] o_score_rgb
+    output wire [2:0] o_score_rgb
 );
 
     wire [1:0] w_current_digits_place;

@@ -42,7 +42,7 @@ module crossyroad  (
     // VGA Controller Instance
     vga vga_inst (
         .clk(clk),
-        .reset(rst),
+        .reset(rst_man), // The VGA controller does not need to be reset when the game restarts.
         .hsync(hsync),
         .vsync(vsync),
         .display_on(video_on),
@@ -55,7 +55,7 @@ module crossyroad  (
         .reset(rst),
         .move_btn(move_btn),
         .score(score),
-        .start_posy(10'd32),
+        .start_posy(10'b0),
         .y_pos(obstacle1_y)
     );
 
@@ -137,7 +137,7 @@ module crossyroad  (
                     3'b001 :                          // Background (Blue)
                  3'b000;                           // Blanking (Black)
 
-    wire rst_collision = (obstacle1_hit || obstacle2_hit) && chicken_hit; // If collision activate reset
+    wire rst_collision = (obstacle1_hit || obstacle2_hit || obstacle3_hit) && chicken_hit; // If collision activate reset
     assign rst = rst_man | rst_collision;
 
 endmodule
