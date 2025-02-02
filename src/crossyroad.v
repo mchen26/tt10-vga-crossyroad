@@ -31,8 +31,8 @@ module crossyroad  (
 
     // Internal signals
     wire [9:0] pixel_x, pixel_y; // VGA pixel coordinates
-    wire [9:0] obstacle1_y;// obstacle2_y;//, obstacle3_y;       // Obstacle Y position
-    wire [9:0] obstacle1_x;// obstacle2_x;//, obstacle3_x;       // Obstacle X position (Corrected typo)
+    wire [9:0] obstacle1_y, obstacle2_y;//, obstacle3_y;       // Obstacle Y position
+    wire [9:0] obstacle1_x, obstacle2_x;//, obstacle3_x;       // Obstacle X position (Corrected typo)
     wire [7:0] score;
     wire [7:0] dummy_score1, dummy_score2; // Only want one scroll_v module to drive score
     wire [2:0] score_rgb;
@@ -67,7 +67,6 @@ module crossyroad  (
         .h_pos(obstacle1_x)
     );
 
-    /*
      scroll_v scroll2_v_inst (
         .clk(clk),
         .reset(rst),
@@ -84,7 +83,7 @@ module crossyroad  (
         .start_posx(OB_X_OFFSET),
         .h_pos(obstacle2_x)
     );
-    */
+    
     /*
     scroll_v scroll3_v_inst (
         .clk(clk),
@@ -116,11 +115,11 @@ module crossyroad  (
     // VGA Display & Collision Logic (Optimized)
     wire obstacle1_hit = (pixel_x >= obstacle1_x) && (pixel_x < obstacle1_x + OBSTACLE_WIDTH) &&
                          (pixel_y >= obstacle1_y) && (pixel_y < obstacle1_y + OBSTACLE_HEIGHT);
-    /*
+    
     // VGA Display & Collision Logic for the second obstacle
     wire obstacle2_hit = (pixel_x >= obstacle2_x) && (pixel_x < obstacle2_x + OBSTACLE_WIDTH) &&
                          (pixel_y >= obstacle2_y) && (pixel_y < obstacle2_y + OBSTACLE_HEIGHT);
-    */
+    
     // VGA Display & Collision Logic for the second obstacle
     /*
     wire obstacle3_hit = (pixel_x >= obstacle3_x) && (pixel_x < obstacle3_x + OBSTACLE_WIDTH) &&
@@ -133,16 +132,16 @@ module crossyroad  (
     assign rgb = (video_on) ?
                     (score_rgb != 3'b000) ? score_rgb : // If score_rbg is not black. Draw it.
                     (obstacle1_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
-                    //(obstacle2_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
+                    (obstacle2_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
                     //(obstacle3_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
                     (obstacle1_hit) ? 3'b100 :           // Obstacle (Red)
-                    //(obstacle2_hit) ? 3'b100 :           // Obstacle (Red)
+                    (obstacle2_hit) ? 3'b100 :           // Obstacle (Red)
                     //(obstacle3_hit) ? 3'b100 :           // Obstacle (Red)
                     (chicken_hit) ? 3'b010 :            // Chicken (Green)
                     3'b001 :                          // Background (Blue)
                  3'b000;                           // Blanking (Black)
 
-    wire rst_collision = (obstacle1_hit) && chicken_hit; // If collision activate reset
+    wire rst_collision = (obstacle1_hit || obstacle2_hit) && chicken_hit; // If collision activate reset
     assign rst = rst_man | rst_collision;
 
 endmodule
