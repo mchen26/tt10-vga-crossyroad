@@ -62,7 +62,7 @@ module crossyroad  (
     scroll_h scroll1_h_inst (
         .clk(clk),
         .reset(rst),
-        .score(),
+        .score(score),
         .start_posx(10'b0),
         .h_pos(obstacle1_x)
     );
