@@ -31,8 +31,8 @@ module crossyroad  (
 
     // Internal signals
     wire [9:0] pixel_x, pixel_y; // VGA pixel coordinates
-    wire [9:0] obstacle1_y, obstacle2_y//, obstacle3_y;       // Obstacle Y position
-    wire [9:0] obstacle1_x, obstacle2_x//, obstacle3_x;       // Obstacle X position (Corrected typo)
+    wire [9:0] obstacle1_y, obstacle2_y;//, obstacle3_y;       // Obstacle Y position
+    wire [9:0] obstacle1_x, obstacle2_x;//, obstacle3_x;       // Obstacle X position (Corrected typo)
     wire [7:0] score;
     wire [7:0] dummy_score1, dummy_score2; // Only want one scroll_v module to drive score
     wire [2:0] score_rgb;
