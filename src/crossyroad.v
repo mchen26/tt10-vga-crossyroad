@@ -118,8 +118,7 @@ module crossyroad  (
     wire obstacle2_hit = (pixel_x >= obstacle2_x) && (pixel_x < obstacle2_x + OBSTACLE_WIDTH) &&
                          (pixel_y >= obstacle2_y) && (pixel_y < obstacle2_y + OBSTACLE_HEIGHT);
     
-    // VGA Display & Collision Logic for the second obstacle
-    
+    // VGA Display & Collision Logic for the third obstacle
     wire obstacle3_hit = (pixel_x >= obstacle3_x) && (pixel_x < obstacle3_x + OBSTACLE_WIDTH) &&
                          (pixel_y >= obstacle3_y) && (pixel_y < obstacle3_y + OBSTACLE_HEIGHT);
     
