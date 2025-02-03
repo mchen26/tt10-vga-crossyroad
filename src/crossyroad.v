@@ -15,18 +15,18 @@ module crossyroad  (
 );
 
     // VGA Resolution
-    //localparam SCREEN_WIDTH = 640;
+    localparam SCREEN_WIDTH = 640;
     //localparam SCREEN_HEIGHT = 480;
     //localparam SCORE_WIDTH = 640;
     //localparam SCORE_HEIGHT = 32;
-    localparam OBSTACLE_WIDTH = 180;
-    localparam OBSTACLE_HEIGHT = 100;
+    localparam OBSTACLE_WIDTH = 120;
+    localparam OBSTACLE_HEIGHT = 70;
     localparam CHICKEN_X = 310;
     localparam CHICKEN_Y = 420;
     localparam CHICKEN_WIDTH = 30;
     localparam CHICKEN_HEIGHT = 40;
-    localparam OB_Y_OFFSET = 10'd150;
-    localparam OB_X_OFFSET = 10'd350;
+    localparam OB_Y_OFFSET = 10'd160;
+    localparam OB_X_OFFSET = 10'd200;
 
 
     // Internal signals
@@ -71,7 +71,7 @@ module crossyroad  (
         .clk(clk),
         .reset(rst),
         .move(move_v),
-        .start_posy(OB_Y_OFFSET),
+        .start_posy(0),
         .y_pos(obstacle2_y)
     );
 
@@ -79,7 +79,7 @@ module crossyroad  (
         .clk(clk),
         .reset(rst),
         .move(move_h),
-        .start_posx(OB_X_OFFSET),
+        .start_posx(SCREEN_WIDTH),
         .h_pos(obstacle2_x)
     );
 

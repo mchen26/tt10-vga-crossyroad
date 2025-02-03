@@ -18,7 +18,7 @@ module scroll_h (
     // Obstacle Movement Logic
     always @(posedge clk) begin
         if (reset) begin
-            h_pos <= 10'b0;                // Reset position to top
+            h_pos <= 10'd380;                // Reset position to top
             ctr <= 0;                  // Reset counter
             move_followers <= 0;
         end else begin

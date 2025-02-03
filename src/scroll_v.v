@@ -12,7 +12,8 @@ module scroll_v (
     localparam SCREEN_HEIGHT = 480;    // Screen height
     localparam SPEED = 100000;          // 40ms at 25MHz clock
     localparam SCORE_SPEED = 10;       // 1s score update
-  
+    localparam OB_Y_OFFSET = 10'd150;
+
     // Internal Registers
     reg [17:0] ctr;                    // Counter for timing
     reg [6:0] score_ctr;
@@ -20,7 +21,7 @@ module scroll_v (
     // Obstacle Movement Logic
     always @(posedge clk) begin
         if (reset) begin
-            y_pos <= 10'b0;        // Reset position to top
+            y_pos <= OB_Y_OFFSET;        // Reset position to top
             ctr <= 0;                  // Reset counter
             score_ctr <= 0;
             score <= 0;

@@ -16,10 +16,10 @@ module scroll_h_follower (
             h_pos <= start_posx;                // Reset position to top
         end else begin
             if (move) begin
-                if ((h_pos + move_amt) >= SCREEN_WIDTH) begin
-                    h_pos <= 0;
+              if ((h_pos - move_amt) <= 0) begin
+                    h_pos <= SCREEN_WIDTH;
                 end else begin
-                    h_pos <= h_pos + move_amt;
+                    h_pos <= h_pos - move_amt;
                 end 
             end
         end
