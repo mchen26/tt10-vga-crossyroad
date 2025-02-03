@@ -45,7 +45,8 @@ module scroll_v (
                     score_ctr <= 0;
                     if(score < 99) begin
                         score <= score + 1;
-                    end
+                    end else
+                        score <= 0;
                 end
             end else begin
                 move_followers <= 0;
