@@ -1,7 +1,7 @@
 module scroll_v (
     output reg [9:0] y_pos, // Counter for scrolling down
     output reg [7:0] score,
-    input wire [9:0] start_posy,
+    output reg move_followers, // Tells follower obstacles to move 
     input wire move_btn,
     input wire reset,
     input wire clk
@@ -21,11 +21,12 @@ module scroll_v (
     // Obstacle Movement Logic
     always @(posedge clk) begin
         if (reset) begin
-            y_pos <= start_posy;        // Reset position to top
+            y_pos <= 10'b0;        // Reset position to top
             ctr <= 0;                  // Reset counter
             move_active <= 0;          // Deactivate movement
             score_ctr <= 0;
             score <= 0;
+            move_followers <= 0;
         end else begin
             if (move_btn) begin
                 move_active <= 1;      // Activate movement
@@ -37,6 +38,7 @@ module scroll_v (
             if (move_active) begin
                 ctr <= ctr + 1;
                 if (ctr >= SPEED) begin
+                    move_followers <= 1;
                     ctr <= 0;
                     score_ctr <= score_ctr + 1; 
                     if ((y_pos + move_amt) >= SCREEN_HEIGHT) begin
@@ -44,13 +46,15 @@ module scroll_v (
                     end else begin
                         y_pos <= y_pos + move_amt;
                     end    
-                end
+                end else
+                  move_followers <= 0;
                 if (score_ctr == SCORE_SPEED) begin
                     score_ctr <= 0;
                     score <= score + 1;
                 end
             end else begin
                 ctr <= 0; // Reset counter when not moving
+                move_followers <= 0;
             end
         end
     end
