@@ -129,9 +129,6 @@ module crossyroad  (
 
     assign rgb = (video_on) ?
                     (score_rgb != 3'b000) ? score_rgb : // If score_rbg is not black. Draw it.
-                    (obstacle1_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
-                    (obstacle2_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
-                    (obstacle3_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
                     (obstacle1_hit) ? 3'b100 :           // Obstacle (Red)
                     (obstacle2_hit) ? 3'b100 :           // Obstacle (Red)
                     (obstacle3_hit) ? 3'b100 :           // Obstacle (Red)
