@@ -12,7 +12,7 @@ module score #(
     parameter SCORE_HORIZONTAL_START_OFFSET = 610,
     parameter SCORE_VERTICAL_START_OFFSET = 2,
     parameter BANNER_COLOR = 3'b000, // WARNING: Black means no draw
-    parameter DIGIT_COLOR  = 3'b100
+    parameter DIGIT_COLOR  = 3'b111
 )
 (
     input wire i_clk,

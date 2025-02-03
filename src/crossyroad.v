@@ -129,11 +129,11 @@ module crossyroad  (
 
     assign rgb = (video_on) ?
                     (score_rgb != 3'b000) ? score_rgb : // If score_rbg is not black. Draw it.
-                    (obstacle1_hit) ? 3'b100 :           // Obstacle (Red)
-                    (obstacle2_hit) ? 3'b100 :           // Obstacle (Red)
-                    (obstacle3_hit) ? 3'b100 :           // Obstacle (Red)
+                    (obstacle1_hit) ? 3'b001 :           // Obstacle (Red)
+                    (obstacle2_hit) ? 3'b001 :           // Obstacle (Red)
+                    (obstacle3_hit) ? 3'b001 :           // Obstacle (Red)
                     (chicken_hit) ? 3'b010 :            // Chicken (Green)
-                    3'b001 :                          // Background (Blue)
+                    3'b100 :                          // Background (Blue)
                  3'b000;                           // Blanking (Black)
 
     wire rst_collision = (obstacle1_hit || obstacle2_hit || obstacle3_hit) && chicken_hit; // If collision activate reset
