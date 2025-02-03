@@ -16,26 +16,19 @@ module scroll_v (
     // Internal Registers
     reg [17:0] ctr;                    // Counter for timing
     reg [6:0] score_ctr;
-    reg move_active;                   // Track button press state
 
     // Obstacle Movement Logic
     always @(posedge clk) begin
         if (reset) begin
             y_pos <= 10'b0;        // Reset position to top
             ctr <= 0;                  // Reset counter
-            move_active <= 0;          // Deactivate movement
             score_ctr <= 0;
             score <= 0;
             move_followers <= 0;
         end else begin
-            if (move_btn) begin
-                move_active <= 1;      // Activate movement
-            end else begin
-                move_active <= 0;      // Deactivate movement
-            end
 
             // Counter for speed control
-            if (move_active) begin
+            if (move_btn) begin
                 ctr <= ctr + 1;
                 if (ctr >= SPEED) begin
                     move_followers <= 1;
@@ -55,7 +48,6 @@ module scroll_v (
                     end
                 end
             end else begin
-                ctr <= 0; // Reset counter when not moving
                 move_followers <= 0;
             end
         end
