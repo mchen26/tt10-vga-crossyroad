@@ -2,7 +2,7 @@ module scroll_h (
     output reg [9:0] h_pos, // Counter for scrolling down
     output reg move_followers, //Tells other obstacles when to move
     input wire reset,
-    input wire [7:0] score,
+    input wire [6:0] score,
     input wire clk
 );
 

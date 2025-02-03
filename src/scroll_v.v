@@ -1,6 +1,6 @@
 module scroll_v (
     output reg [9:0] y_pos, // Counter for scrolling down
-    output reg [7:0] score,
+    output reg [6:0] score,
     output reg move_followers, // Tells follower obstacles to move 
     input wire move_btn,
     input wire reset,
@@ -15,7 +15,7 @@ module scroll_v (
   
     // Internal Registers
     reg [17:0] ctr;                    // Counter for timing
-    reg [7:0] score_ctr;
+    reg [6:0] score_ctr;
     reg move_active;                   // Track button press state
 
     // Obstacle Movement Logic
@@ -50,7 +50,9 @@ module scroll_v (
                   move_followers <= 0;
                 if (score_ctr == SCORE_SPEED) begin
                     score_ctr <= 0;
-                    score <= score + 1;
+                    if(score < 99) begin
+                        score <= score + 1;
+                    end
                 end
             end else begin
                 ctr <= 0; // Reset counter when not moving

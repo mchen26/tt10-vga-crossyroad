@@ -6,13 +6,11 @@
 
 // Calculate and render score, score increments while user holds move button
 module score #(
-    //parameter SCORE_BACKGROUND_WIDTH = 640,
     parameter SCORE_BACKGROUND_HEIGHT = 32,
-    //parameter SCORE_TOTAL_WIDTH = 46,
     parameter SCORE_WIDTH = 12,
     parameter SCORE_GAP = 4,
     parameter SCORE_HEIGHT = 28,
-    parameter SCORE_HORIZONTAL_START_OFFSET = 590,
+    parameter SCORE_HORIZONTAL_START_OFFSET = 610,
     parameter SCORE_VERTICAL_START_OFFSET = 2,
     parameter BANNER_COLOR = 3'b000, // WARNING: Black means no draw
     parameter DIGIT_COLOR  = 3'b100
@@ -22,7 +20,7 @@ module score #(
     input wire i_rst_n,
     input wire [9:0] i_vpos,
     input wire [9:0] i_hpos,
-    input wire [7:0] i_score,
+    input wire [6:0] i_score,
 
     output wire [2:0] o_score_rgb
 );
@@ -44,23 +42,18 @@ module score #(
     */
     assign w_current_digits_place = (i_hpos >= SCORE_HORIZONTAL_START_OFFSET &&
                                      i_hpos <  SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH) ? 
-                                        2'd2 : // 100's place
+                                        2'd1 : // 10's place
                                     (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP &&
                                      i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + SCORE_GAP) ?
-                                        2'd1 : // 10's place
-                                    (i_hpos >= SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + 2*SCORE_GAP &&
-                                     i_hpos <  SCORE_HORIZONTAL_START_OFFSET + 3*SCORE_WIDTH + 2*SCORE_GAP) ?
                                         2'd0 : // 1's place
-                                        2'd3;  // Not in digit section.
+                                        2'd2;  // Not in digit section.
 
     /**
      * Sets the horizontal draw offset for the score digits taking into account the Nth place horizontal position.
     */
-    assign w_digit_horizontal_offset = (w_current_digits_place == 2'd2) ?
-                                        SCORE_HORIZONTAL_START_OFFSET : // 100's place horizontal offset
-                                       (w_current_digits_place == 2'd1) ? 
-                                        SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP - 1 : // 10's place horizontal offset
-                                        SCORE_HORIZONTAL_START_OFFSET + 2*SCORE_WIDTH + 2*SCORE_GAP - 1; // 1's place horizontal offset
+    assign w_digit_horizontal_offset = (w_current_digits_place == 2'd1) ?
+                                        SCORE_HORIZONTAL_START_OFFSET : // 10's place horizontal offset
+                                        SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP - 1; // 1's place horizontal offset
 
     /**
      * The digits 0-9 are composed of different combinations of 9 geometrical shapes that overlap.
@@ -140,19 +133,14 @@ module score #(
 
 always @(posedge i_clk) begin
     if (i_rst_n && i_vpos <= SCORE_BACKGROUND_HEIGHT) begin
-        if(i_vpos < SCORE_VERTICAL_START_OFFSET   && i_vpos > SCORE_VERTICAL_START_OFFSET + SCORE_HEIGHT &&
-           w_current_digits_place == 2'd3) begin
-            r_score_rgb <= BANNER_COLOR; // Currently not in the region that the score can be drawn in. Draw the banner background.
-        end
-        else if (w_current_digits_place == 2'd2) begin // Draw 100's place digit
-            r_score_rgb <= (w_digit[i_score / 100]) ? DIGIT_COLOR : BANNER_COLOR;
-        end
-        else if (w_current_digits_place == 2'd1) begin // Draw 10's place digit
+        if (w_current_digits_place == 2'd1) begin // Draw 10's place digit
             r_score_rgb <= (w_digit[(i_score / 10) % 10]) ? DIGIT_COLOR : BANNER_COLOR;
         end
-        else begin // Draw 1's place digit
+        else if (w_current_digits_place == 2'd0) begin // Draw 1's place digit
             r_score_rgb <= (w_digit[(i_score) % 10]) ? DIGIT_COLOR : BANNER_COLOR;
         end
+        else
+            r_score_rgb <= BANNER_COLOR;
     end
     else begin
         r_score_rgb <= 3'b000; // WARNING: Black means no draw
