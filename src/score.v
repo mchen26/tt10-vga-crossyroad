@@ -9,7 +9,6 @@ module score #(
     parameter SCORE_BACKGROUND_HEIGHT = 32,
     parameter SCORE_WIDTH = 12,
     parameter SCORE_GAP = 4,
-    parameter SCORE_HEIGHT = 28,
     parameter SCORE_HORIZONTAL_START_OFFSET = 610,
     parameter SCORE_VERTICAL_START_OFFSET = 2,
     parameter BANNER_COLOR = 3'b000, // WARNING: Black means no draw

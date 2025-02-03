@@ -33,7 +33,7 @@ module crossyroad  (
     wire [9:0] pixel_x, pixel_y; // VGA pixel coordinates
     wire [9:0] obstacle1_y, obstacle2_y, obstacle3_y;       // Obstacle Y position
     wire [9:0] obstacle1_x, obstacle2_x, obstacle3_x;       // Obstacle X position (Corrected typo)
-    wire [7:0] score;
+    wire [6:0] score;
     wire [2:0] score_rgb;
     wire move_h, move_v;
     wire rst;
