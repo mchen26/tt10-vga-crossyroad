@@ -21,6 +21,8 @@ project:
     - "score.v"
     - "scroll_h.v"
     - "scroll_v.v"
+    - "scroll_h_follower.v"
+    - "scroll_v_follower.v"
     - "vga.v"
     - "tt_um_10_vga_crossyroad.v"
 

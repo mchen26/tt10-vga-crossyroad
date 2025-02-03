@@ -22,7 +22,7 @@ module scroll_h (
         end else begin
             ctr <= ctr + 1;
           if (ctr >= (SPEED)) begin
-              ctr <= {10'b0, score} << 5; // Increase speed as score increases
+              ctr <= {10'b0, score} << 8; // Increase speed as score increases
               if ((h_pos + move_amt) >= SCREEN_WIDTH) begin
                   h_pos <= 0;
               end else begin
