@@ -19,14 +19,14 @@ module crossyroad  (
     //localparam SCREEN_HEIGHT = 480;
     //localparam SCORE_WIDTH = 640;
     //localparam SCORE_HEIGHT = 32;
-    localparam OBSTACLE_WIDTH = 50;
-    localparam OBSTACLE_HEIGHT = 30;
+    localparam OBSTACLE_WIDTH = 180;
+    localparam OBSTACLE_HEIGHT = 100;
     localparam CHICKEN_X = 310;
-    localparam CHICKEN_Y = 400;
+    localparam CHICKEN_Y = 420;
     localparam CHICKEN_WIDTH = 30;
     localparam CHICKEN_HEIGHT = 40;
     localparam OB_Y_OFFSET = 10'd150;
-    localparam OB_X_OFFSET = 10'd250;
+    localparam OB_X_OFFSET = 10'd350;
 
 
     // Internal signals
