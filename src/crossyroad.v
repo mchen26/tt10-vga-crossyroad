@@ -100,6 +100,7 @@ module crossyroad  (
         .h_pos(obstacle3_x)
     );
     */
+    /*
     score score_inst(
         .i_clk(clk),
         .i_rst_n(~rst),
@@ -108,7 +109,7 @@ module crossyroad  (
         .i_score(score),
         .o_score_rgb(score_rgb)
     );
-
+    */
     // VGA Display & Collision Logic (Optimized)
     wire obstacle1_hit = (pixel_x >= obstacle1_x) && (pixel_x < obstacle1_x + OBSTACLE_WIDTH) &&
                          (pixel_y >= obstacle1_y) && (pixel_y < obstacle1_y + OBSTACLE_HEIGHT);
@@ -127,7 +128,7 @@ module crossyroad  (
                        (pixel_y >= CHICKEN_Y) && (pixel_y < CHICKEN_Y + CHICKEN_HEIGHT);
 
     assign rgb = (video_on) ?
-                    (score_rgb != 3'b000) ? score_rgb : // If score_rbg is not black. Draw it.
+                    //(score_rgb != 3'b000) ? score_rgb : // If score_rbg is not black. Draw it.
                     (obstacle1_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
                     (obstacle2_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
                     //(obstacle3_hit && chicken_hit) ? 3'b011 : // Obstacle and chicken overlap (Yellow)
