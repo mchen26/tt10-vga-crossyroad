@@ -11,7 +11,7 @@ module scroll_v (
     localparam move_amt = 2;           // Move amount per 40ms
     localparam SCREEN_HEIGHT = 480;    // Screen height
     localparam SPEED = 100000;          // 40ms at 25MHz clock
-    localparam SCORE_SPEED = 10;       // 1s score update
+    localparam SCORE_SPEED = 70;       // 1s score update
     localparam OB_Y_OFFSET = 10'd150;
 
     // Internal Registers

@@ -9,7 +9,7 @@ module score #(
     parameter SCORE_BACKGROUND_HEIGHT = 32,
     parameter SCORE_WIDTH = 12,
     parameter SCORE_GAP = 4,
-    parameter SCORE_HORIZONTAL_START_OFFSET = 610,
+    parameter SCORE_HORIZONTAL_START_OFFSET = 606,
     parameter SCORE_VERTICAL_START_OFFSET = 2,
     parameter BANNER_COLOR = 3'b000, // WARNING: Black means no draw
     parameter DIGIT_COLOR  = 3'b111
@@ -52,7 +52,7 @@ module score #(
     */
     assign w_digit_horizontal_offset = (w_current_digits_place == 2'd1) ?
                                         SCORE_HORIZONTAL_START_OFFSET : // 10's place horizontal offset
-                                        SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP - 1; // 1's place horizontal offset
+                                        SCORE_HORIZONTAL_START_OFFSET + SCORE_WIDTH + SCORE_GAP; // 1's place horizontal offset
 
     /**
      * The digits 0-9 are composed of different combinations of 9 geometrical shapes that overlap.
