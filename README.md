@@ -8,6 +8,9 @@
 
 Building a VGA crossyroad game on a custom 130nm ASIC.
 
+**Our ASIC:**
+![Alt Text](./gds.png)
+
 
 ## Resources
 
